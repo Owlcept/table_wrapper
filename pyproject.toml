@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "table_wrapper"
+version = "1.0"
+description = "This is a API wrapper for tablebackend"
+authors = ["Owlcept(Drew L) <owlcept@owlcept.com>"]
+readme = "README.md"
+packages = [{include = "table.py"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiohttp = "^3.8.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
