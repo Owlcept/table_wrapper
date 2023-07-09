@@ -26,6 +26,7 @@ def from_coroutine(level=2, _cache={}):
     f_code = _getframe(level).f_code
     if f_code in _cache:
         return _cache[f_code]
+    #checking if true aka X > 0 to see if co routine
     if f_code.co_flags & _CO_FROM_COROUTINE:
         _cache[f_code] = True
         return True
@@ -68,10 +69,10 @@ def awaitable(sfunc):
                 return afunc(*args, **kwargs)
             else:
                 return sfunc(*args, **kwargs)
-            
-        wrapper._syncfunc = sfunc
-        wrapper._asyncfunc = afunc
-        wrapper._awaitable = True
+        #these wree used for Curio, not needed here unless you need the attrs   
+        #wrapper._syncfunc = sfunc
+        #wrapper._asyncfunc = afunc
+        #wrapper._awaitable = True
         wrapper.__doc__ = sfunc.__doc__ or afunc.__doc__
         return wrapper
     return decorate
@@ -256,7 +257,6 @@ class TB:
             data = data.json()
             return data
 
-
     async def search(self, table: int|str , q:str) -> dict:
         await self.rate()
         url = f'https://api.tablebackend.com/v1/rows/{self.get_table(table)}/search?q={q}'
@@ -272,13 +272,12 @@ class TB:
             data = r.delete(url = url, params = self.params, json = ids)
             data = data.json()
             return data
-
-
-
+        
+tb = TB(api_key=os.getenv("API"), db = [os.getenv("DB")])
+print(tb.full_table(0))
 
 async def main():
-    tb = TB(api_key=os.getenv("API"), db=[os.getenv("DB")])
-    x =  await tb.full_table(0)
+    x = await tb.full_table(0)
     print(x)
 
 asyncio.run(main())
