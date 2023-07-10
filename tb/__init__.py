@@ -1,1 +1,1 @@
-import table
+from table import TB
