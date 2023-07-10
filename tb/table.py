@@ -3,10 +3,7 @@ import asyncio
 import requests
 import time
 import os
-from dotenv import load_dotenv
-from .util import awaitable
-
-load_dotenv()
+from util import awaitable
 
 
 

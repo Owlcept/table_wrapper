@@ -10,7 +10,6 @@ packages = [{include = "table.py"}]
 python = "^3.11"
 aiohttp = "^3.8.4"
 requests = "^2.31.0"
-python-dotenv = "^1.0.0"
 
 
 [build-system]
