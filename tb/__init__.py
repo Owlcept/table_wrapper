@@ -1,1 +1,1 @@
-from table import TB
+from tb.table import TB
