@@ -3,7 +3,7 @@ import asyncio
 import requests
 import time
 import os
-from util import awaitable
+from .util import awaitable
 
 
 
@@ -114,7 +114,7 @@ class TB:
             if 'acknowledged' in data.keys():
                 return data['acknowledged']
             if 'error' in data.keys():
-                print(f'Error: {data["code"]} - {data["info"]} \nTry again')
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
 
     @awaitable(add)
     async def add(self, table: int|str, info: list[dict]) -> str:
@@ -126,7 +126,7 @@ class TB:
             if 'acknowledged' in data.keys():
                 return data['acknowledged']
             if 'error' in data.keys():
-                print(f'Error: {data["code"]} - {data["info"]} \nTry again')
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
       
     def update(self, table: str|int , info: dict) -> bool:
         """
@@ -147,7 +147,7 @@ class TB:
             data = r.put(url = url, params = self.params, json = info)
             data = data.json()
             if 'error' in data.keys():
-                print(f'Error: {data["code"]} - {data["info"]} \nTry again')
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
             else:
                 return True
 
@@ -171,7 +171,7 @@ class TB:
             data = await r.put(url = url, params = self.params, json = info)
             data = await data.json()
             if 'error' in data.keys():
-                print(f'Error: {data["code"]} - {data["info"]} \nTry again')
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
             else:
                 return True
 
@@ -198,7 +198,10 @@ class TB:
         with requests.session() as r:
             data = r.get(url = url, params = self.params)
             data = data.json()
-            return data['hits']
+            if 'error' in data.keys():
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
+            else:
+                return data['hits']
     
     @awaitable(search)
     async def search(self, table: int|str , q:str) -> dict:
@@ -207,4 +210,7 @@ class TB:
         async with aiohttp.ClientSession() as r:
             data = await r.get(url = url, params = self.params)
             data = await data.json()
-            return data['hits']
+            if 'error' in data.keys():
+                raise Exception(f'Error: {data["code"]} - {data["info"]} \nTry again')
+            else:
+                return data['hits']
